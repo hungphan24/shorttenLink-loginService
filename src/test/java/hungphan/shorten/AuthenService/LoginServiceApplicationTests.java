@@ -1,4 +1,4 @@
-package hungphan.shorten.LoginService;
+package hungphan.shorten.AuthenService;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
