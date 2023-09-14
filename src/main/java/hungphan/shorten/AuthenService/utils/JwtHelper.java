@@ -8,6 +8,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 import java.security.Key;
+import java.util.Date;
 
 @Component
 public class JwtHelper {
@@ -18,6 +19,7 @@ public class JwtHelper {
 
         String token = Jwts.builder()
                 .setSubject(data)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
                 .signWith(key)
                 .compact();
         return token;
