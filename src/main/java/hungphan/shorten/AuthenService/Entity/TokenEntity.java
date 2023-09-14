@@ -2,13 +2,13 @@ package hungphan.shorten.AuthenService.Entity;
 
 import jakarta.persistence.*;
 
-@Entity(name = "token")
+@Entity(name = "tokens")
 public class TokenEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name")
+    @Column(name = "token")
     private String token;
 
     @Column(name = "Enable")
