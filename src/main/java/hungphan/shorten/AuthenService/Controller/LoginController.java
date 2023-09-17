@@ -2,10 +2,14 @@ package hungphan.shorten.AuthenService.Controller;
 
 import hungphan.shorten.AuthenService.Entity.TokenEntity;
 import hungphan.shorten.AuthenService.Repository.TokenRepository;
+import hungphan.shorten.AuthenService.payload.request.userLoginRequest;
+import hungphan.shorten.AuthenService.payload.request.userRegisterRequest;
 import hungphan.shorten.AuthenService.payload.response.BaseResponse;
 import hungphan.shorten.AuthenService.service.Interface.ITokenService;
+import hungphan.shorten.AuthenService.service.loginService;
 import hungphan.shorten.AuthenService.utils.JwtHelper;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,9 +33,14 @@ public class LoginController {
     @Autowired
     private ITokenService iTokenService;
 
-    @PostMapping(value = "/signin")
-    public ResponseEntity<?> signin(@RequestBody String email, @RequestBody String password) {
+    @Autowired
+    private loginService loginService;
+
+    @PostMapping(value = "/login")
+    public ResponseEntity<?> login(@Valid userLoginRequest request) {
         try {
+            String email = request.getEmail();
+            String password = request.getPassword();
             UsernamePasswordAuthenticationToken user = new UsernamePasswordAuthenticationToken(email, password);
             authenticationManager.authenticate(user);
 
@@ -54,7 +63,7 @@ public class LoginController {
     }
 
     @GetMapping(value = "/logoutt")
-    public ResponseEntity logout(HttpServletRequest request) {
+    public ResponseEntity<?> logout(HttpServletRequest request) {
         final String authHeader = request.getHeader("Authorization");
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
@@ -78,5 +87,11 @@ public class LoginController {
         errorResponse.setStatusCode(400);
         errorResponse.setMessage("Invalid token or token not provided");
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping(value = "/register")
+    public String register(@Valid userRegisterRequest registerRequest) {
+         loginService.registerService(registerRequest);
+         return null;
     }
 }

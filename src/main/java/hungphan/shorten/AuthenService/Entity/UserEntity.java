@@ -10,19 +10,25 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotNull(message = "username not null")
     @Column(name = "username")
     private String username;
 
-    @NotNull(message = "password not null")
     @Column(name = "password")
     private String password;
 
-    @NotNull(message = "email not null")
-    @Email(message = "Please enter correct format")
     @Column(name = "email")
     private String email;
 
+    @Column(name = "role_id")
+    private int role;
+
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
+    }
 
     public int getId() {
         return id;
