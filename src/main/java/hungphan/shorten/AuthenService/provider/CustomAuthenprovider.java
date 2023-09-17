@@ -27,19 +27,7 @@ public class CustomAuthenprovider implements AuthenticationProvider {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
 
-        System.out.println("authenticate enter " + username + " " + password);
-
         UserEntity user = userRepository.findByEmail(username);
-        if(user != null) {
-            System.out.println("user not null");
-        } else {
-            System.out.println("user null");
-        }
-        if(passwordEncoder.matches(password, user.getPassword())) {
-            System.out.println("password match");
-        } else {
-            System.out.println("password not match");
-        }
         if(user != null && passwordEncoder.matches(password, user.getPassword())) {
             System.out.println("authen oke");
             return new UsernamePasswordAuthenticationToken(username, user.getPassword(), new ArrayList<>());
