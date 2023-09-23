@@ -25,11 +25,12 @@ public class JwtHelper {
         return token;
     }
 
-    public Claims decodeToken(String token) {
+    public String decodeToken(String token) {
         Key key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secrectkey));
         Claims claims = Jwts.parserBuilder().setSigningKey(key)
                 .build().parseClaimsJws(token)
                 .getBody();
-        return claims;
+        String data = claims.getSubject();
+        return data;
     }
 }

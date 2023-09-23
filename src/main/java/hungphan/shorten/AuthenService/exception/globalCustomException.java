@@ -16,4 +16,13 @@ public class globalCustomException {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @ExceptionHandler(badRequestException.class)
+    public ResponseEntity<?> handleCustomException(Exception e) {
+        BaseResponse response = new BaseResponse();
+        response.setStatusCode(400);
+        response.setData(e.getMessage());
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
