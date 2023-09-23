@@ -90,8 +90,21 @@ public class LoginController {
     }
 
     @PostMapping(value = "/register")
-    public String register(@Valid userRegisterRequest registerRequest) {
+    public ResponseEntity<?> register(@Valid userRegisterRequest registerRequest) {
          loginService.registerService(registerRequest);
-         return null;
+         BaseResponse baseResponse = new BaseResponse();
+         baseResponse.setStatusCode(200);
+         baseResponse.setMessage("register succesfully");
+         return new ResponseEntity<>(baseResponse, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/authen")
+    public ResponseEntity<?> authen(HttpServletRequest request) {
+        String email = loginService.authenService(request);
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setStatusCode(200);
+        baseResponse.setMessage("authentication successfully");
+        baseResponse.setData(email);
+        return new ResponseEntity<>(baseResponse, HttpStatus.OK);
     }
 }
