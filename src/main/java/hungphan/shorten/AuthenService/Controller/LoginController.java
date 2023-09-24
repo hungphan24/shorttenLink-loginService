@@ -62,7 +62,7 @@ public class LoginController {
         }
     }
 
-    @GetMapping(value = "/logoutt")
+    @PostMapping(value = "/logoutt")
     public ResponseEntity<?> logout(HttpServletRequest request) {
         final String authHeader = request.getHeader("Authorization");
 
@@ -98,13 +98,13 @@ public class LoginController {
          return new ResponseEntity<>(baseResponse, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/authen")
-    public ResponseEntity<?> authen(HttpServletRequest request) {
-        String email = loginService.authenService(request);
+    @PostMapping(value = "/authen")
+    public ResponseEntity<?> authen(@RequestBody String authHeader) {
+        String email = loginService.authenService(authHeader);
         BaseResponse baseResponse = new BaseResponse();
         baseResponse.setStatusCode(200);
         baseResponse.setMessage("authentication successfully");
         baseResponse.setData(email);
-        return new ResponseEntity<>(baseResponse, HttpStatus.OK);
+        return new ResponseEntity<BaseResponse>(baseResponse, HttpStatus.OK);
     }
 }

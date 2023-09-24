@@ -46,8 +46,8 @@ public class loginService {
         userRepository.save(saveUser);
     }
 
-    public String authenService(HttpServletRequest request) {
-        final String authHeader = request.getHeader("Authorization");
+    public String authenService(String authHeader) {
+        // final String authHeader = request.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             throw new badRequestException("Error: Bad request");
         }
