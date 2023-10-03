@@ -8,6 +8,7 @@ import hungphan.shorten.AuthenService.payload.response.BaseResponse;
 import hungphan.shorten.AuthenService.service.Interface.ITokenService;
 import hungphan.shorten.AuthenService.service.loginService;
 import hungphan.shorten.AuthenService.utils.JwtHelper;
+import io.github.resilience4j.retry.annotation.Retry;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,12 +100,20 @@ public class LoginController {
     }
 
     @PostMapping(value = "/authen")
+    @Retry(name = "authen", fallbackMethod = "failResponse")
     public ResponseEntity<?> authen(@RequestBody String authHeader) {
         String email = loginService.authenService(authHeader);
         BaseResponse baseResponse = new BaseResponse();
         baseResponse.setStatusCode(200);
         baseResponse.setMessage("authentication successfully");
         baseResponse.setData(email);
+        return new ResponseEntity<BaseResponse>(baseResponse, HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> failResponse(Exception ex) {
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setStatusCode(500);
+        baseResponse.setMessage("fallback-response");
         return new ResponseEntity<BaseResponse>(baseResponse, HttpStatus.OK);
     }
 }
